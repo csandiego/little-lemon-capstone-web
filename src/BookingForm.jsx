@@ -1,11 +1,17 @@
 import { useState } from "react";
 
-export default function BookingForm({availableTimes, updateTimes}) {
+export default function BookingForm({availableTimes, dispatch, submitForm}) {
     const [state, setState] = useState({});
     return (
-        <form>
+        <form onSubmit={e => {
+            e.preventDefault();
+            submitForm(state);
+        }}>
             <label htmlFor="date">Choose date</label>
-            <input id="date" type="date" value={state.date} onChange={e => setState({ ...state, date: e.target.value })} />
+            <input id="date" type="date" value={state.date} onChange={e => {
+                setState({ ...state, date: e.target.value })
+                dispatch(e.target.value)
+            }} />
             <label htmlFor="time">Choose time</label>
             <select id="time" value={state.time} onChange={e => setState({ ...state, time: e.target.value })}>
                 {availableTimes.map(t => <option key={t}>{t}</option>)}
